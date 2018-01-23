@@ -16,7 +16,6 @@ export OS_FLOATINGIP_POOL="public"
 
 WORKDIR="$(dirname $0)/.."
 
-REGISTRY="registry.hp-lab1.local"
 NB_AGENTS=2
 
 cleanup() {
