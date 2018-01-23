@@ -10,14 +10,14 @@ fi
 
 REGISTRY=registry.hp-lab1.local:5043
 KEYSTONE=
-MYSQL_ROOT_PASSWORD=toto
+MYSQL_ROOT_PASSWORD=abc28f0f-e4f1-4657-ab7b-da0044d7baba
 MYSQL_DATABASE=prestashop
 MYSQL_USER=prestashop
-MYSQL_PASSWORD=prestashop1234
+MYSQL_PASSWORD=d328ca98-68bc-4a08-b78f-c402db14a8ec
 W2_APIKEY="$(cat "$HOME/.mailgunkey_prod")"
 W2_TO="pierre.franco@grenoble-inp.org"
-W2_DOMAIN=hp1-lab.local
-WORKDIR="$(dirname $0)"
+W2_DOMAIN=sandboxa7286fa82cd044d3bf44807954ab0f6e.mailgun.org
+WORKDIR="$(dirname $0)/.."
 
 # Patch docker-compose-v3.yaml to pass our variables
 cp $STACK_FILE $STACK_FILE.old
