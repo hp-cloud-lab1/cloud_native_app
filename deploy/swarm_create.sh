@@ -59,7 +59,7 @@ docker-machine scp "$HOME/proddockerCA.crt" manager-prod:/tmp
 
 docker-machine ssh manager-prod <<'EOF'
 sudo mkdir /usr/local/share/ca-certificates/docker-dev-cert
-mv /tmp/dproddockerCA.crt /usr/local/share/ca-certificates/docker-dev-cert
+mv /tmp/proddockerCA.crt /usr/local/share/ca-certificates/docker-dev-cert
 sudo update-ca-certificates
 EOF
 
