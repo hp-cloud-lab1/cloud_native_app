@@ -19,8 +19,6 @@ WORKDIR="$(dirname $0)/.."
 REGISTRY="registry.hp-lab1.local"
 NB_AGENTS=2
 
-rm -r "$HOME/.docker"
-
 cleanup() {
     HOSTS="$(docker-machine ls -f "{{.Name}}")"
 
