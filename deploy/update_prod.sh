@@ -23,11 +23,12 @@ sleep 10
 
 docker cp -L "$(dirname $0)/.." "$DOCKER_ID:/root/CNA"
 docker cp -L "$HOME/.ssh/deploy-key.pem" "$DOCKER_ID:/root"
+docker cp -L "$HOME/.ssh/key-prod.pem" "$DOCKER_ID:/root"
 
 docker exec -i "$DOCKER_ID" bash -xe <<EOF
 
-scp -oStrictHostKeyChecking=no -ri ~/deploy-key.pem /root/CNA ubuntu@10.11.53.16:"$WORKDIR"
-ssh -oStrictHostKeyChecking=no -i ~/deploy-key.pem ubuntu@10.11.53.16 "cd $WORKDIR; deploy/docker_services.sh"
+scp -oStrictHostKeyChecking=no -ri ~/key-prod.pem /root/CNA ubuntu@10.11.54.11:"$WORKDIR"
+ssh -oStrictHostKeyChecking=no -i ~/key-prod.pem ubuntu@10.11.54.11 "cd $WORKDIR; deploy/docker_services.sh"
 
 EOF
 
