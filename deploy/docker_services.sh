@@ -1,8 +1,8 @@
-#!/bin/bash
+#!/bin/bash -xe
 
 # Script to run the CNA as docker services on swarm
 
-set -x
+set -xe
 
 if [ -z "$STACK_FILE" ]; then
     STACK_FILE="docker-compose-v3.yml"
