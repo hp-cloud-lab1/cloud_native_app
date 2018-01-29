@@ -54,7 +54,7 @@ fi
 
 # Determine which images to rebuild and push
 for svc in web i b p s w w1 w2 db; do
-    reg_date="$(curl -s https://registry.hp-lab1.local:5043/v2/cloudnativeapp_$svc/manifests/latest)"
+    reg_date="$(docker-machine ssh manager-prod curl -s https://registry.hp-lab1.local:5043/v2/cloudnativeapp_$svc/manifests/latest)"
     reg_date="$(echo "$reg_date" | jq -r '[.history[]]|map(.v1Compatibility|fromjson|.created)|sort|reverse|.[0]')"
     status="$?"
 
