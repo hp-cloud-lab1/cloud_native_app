@@ -12,6 +12,7 @@ for a specific id.
 - pip3 install mysqlclient
 
 ## Test with mariadb docker
+
 ```
 docker run -d -v $PWD/dump:/docker-entrypoint-initdb.d -e MYSQL_ROOT_PASSWORD=toto -e MYSQL_DATABASE=prestashop -e MYSQL_USER=prestashop -e MYSQL_PASSWORD=prestashop1234 -p 3306:3306 mariadb
 
