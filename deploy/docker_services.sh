@@ -31,6 +31,10 @@ sed -i "s/##W2_TO##/$W2_TO/" $STACK_FILE
 sed -i "s/##W2_DOMAIN##/$W2_DOMAIN/" $STACK_FILE
 sed -i "s/##REGISTRY##/$REGISTRY/" $STACK_FILE
 
+# Patch i config with the real db password
+cp "$WORKDIR/microservices/i/i.conf" "$WORKDIR/microservices/i/i.conf.old"
+sed -i "s/^dbpasswd=prestashop1234\$/dbpasswd=$MYSQL_PASSWORD/" "$WORKDIR/microservices/i/i.conf"
+
 # Patch the p and w1 conf files to point to the SWIFT instance
 cp "$WORKDIR/microservices/p/p.conf" "$WORKDIR/microservices/p/p.conf.old"
 cp "$WORKDIR/microservices/w1/w1.conf" "$WORKDIR/microservices/w1/w1.conf.old"
