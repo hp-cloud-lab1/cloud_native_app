@@ -46,6 +46,7 @@ services:
         networks:
             cnalan:
     i:
+        image: cloudnativeapp_i
         build:
             context: microservices/i
         links:
