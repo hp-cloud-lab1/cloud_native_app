@@ -10,14 +10,14 @@ fi
 
 REGISTRY=registry.hp-lab1.local:5043
 KEYSTONE=
-MYSQL_ROOT_PASSWORD=toto
+MYSQL_ROOT_PASSWORD=abc28f0f-e4f1-4657-ab7b-da0044d7baba
 MYSQL_DATABASE=prestashop
 MYSQL_USER=prestashop
-MYSQL_PASSWORD=prestashop1234
-W2_APIKEY="$(cat "$HOME/.mailgunkey")"
+MYSQL_PASSWORD=d328ca98-68bc-4a08-b78f-c402db14a8ec
+W2_APIKEY="$(cat "$HOME/.mailgunkey_prod")"
 W2_TO="pierre.franco@grenoble-inp.org"
-W2_DOMAIN=hp1-lab.local
-WORKDIR="$(dirname $0)"
+W2_DOMAIN=sandboxa7286fa82cd044d3bf44807954ab0f6e.mailgun.org
+WORKDIR="$(dirname $0)/.."
 
 # Patch docker-compose-v3.yaml to pass our variables
 cp $STACK_FILE $STACK_FILE.old
@@ -30,6 +30,10 @@ sed -i "s/##W2_APIKEY##/$W2_APIKEY/" $STACK_FILE
 sed -i "s/##W2_TO##/$W2_TO/" $STACK_FILE
 sed -i "s/##W2_DOMAIN##/$W2_DOMAIN/" $STACK_FILE
 sed -i "s/##REGISTRY##/$REGISTRY/" $STACK_FILE
+
+# Patch i config with the real db password
+cp "$WORKDIR/microservices/i/i.conf" "$WORKDIR/microservices/i/i.conf.old"
+sed -i "s/^dbpasswd=prestashop1234\$/dbpasswd=$MYSQL_PASSWORD/" "$WORKDIR/microservices/i/i.conf"
 
 # Patch the p and w1 conf files to point to the SWIFT instance
 cp "$WORKDIR/microservices/p/p.conf" "$WORKDIR/microservices/p/p.conf.old"
@@ -54,12 +58,12 @@ fi
 
 # Determine which images to rebuild and push
 for svc in web i b p s w w1 w2 db; do
-    reg_date="$(curl -s https://registry.hp-lab1.local:5043/v2/cloudnativeapp_$svc/manifests/latest)"
+    reg_date="$(docker-machine ssh manager-prod curl -s https://registry.hp-lab1.local:5043/v2/cloudnativeapp_$svc/manifests/latest)"
     reg_date="$(echo "$reg_date" | jq -r '[.history[]]|map(.v1Compatibility|fromjson|.created)|sort|reverse|.[0]')"
     status="$?"
 
     # Image hasn't been pushed yet
-    if [ "$status" -ne 0 ]; then
+    if [ -z "$reg_date" -o "$status" -ne 0 ]; then
         BUILD_LIST=(${BUILD_LIST[@]} $svc)
         continue
     fi
@@ -79,7 +83,6 @@ for svc in ${BUILD_LIST[@]}; do
 
     until [ "$status" -eq 0 -o "$tries" -eq 5 ]; do
         docker-compose build "$svc"
-        status="$?"
         tries="$((tries+1))"
     done
 
