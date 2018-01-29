@@ -59,7 +59,7 @@ for svc in web i b p s w w1 w2 db; do
     status="$?"
 
     # Image hasn't been pushed yet
-    if [ "$status" -ne 0 ]; then
+    if [ -z "$reg_date" -o "$status" -ne 0 ]; then
         BUILD_LIST=(${BUILD_LIST[@]} $svc)
         continue
     fi
